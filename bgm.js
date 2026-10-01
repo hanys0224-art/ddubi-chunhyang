@@ -8,7 +8,7 @@ const MOODS=[
   chords:[[60,64,67,71],[57,60,64,67],[53,57,60,64],[55,59,62,67]],arp:[0,1,2,3,2,1,3,2]},
  {bpm:62,wave:'sine',oct:12,density:.6,arpVol:.075,padVol:.04,lp:1500,
   chords:[[57,60,64,67],[53,57,60,64],[48,52,55,59],[52,56,59,64]],arp:[0,2,1,3,2,1,0,2]},
- {bpm:50,wave:'sine',oct:0,density:.35,arpVol:.09,padVol:.05,lp:700,
+ {bpm:54,wave:'triangle',oct:12,padOct:0,density:.55,arpVol:.085,padVol:.05,lp:1300,
   chords:[[50,57,60,65],[50,58,62,65],[48,55,58,63],[49,57,61,64]],arp:[0,1,0,2,0,3,1,2]},
  {bpm:76,wave:'triangle',oct:12,density:.8,arpVol:.065,padVol:.04,lp:2600,
   chords:[[53,57,60,64],[52,55,60,64],[50,53,57,60],[58,62,65,69]],arp:[0,1,2,3,1,2,3,2]}
@@ -31,7 +31,7 @@ function pad(notes,t,dur,m){
  const g=ctx.createGain();g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(m.padVol,t+1.2);
  g.gain.setValueAtTime(m.padVol,t+dur-.2);g.gain.linearRampToValueAtTime(0,t+dur+1.4);
  f.connect(g);g.connect(music);
- notes.forEach(n=>[-7,7].forEach(d=>{const o=ctx.createOscillator();o.type='sawtooth';o.frequency.value=hz(n-12);o.detune.value=d;
+ notes.forEach(n=>[-7,7].forEach(d=>{const o=ctx.createOscillator();o.type='sawtooth';o.frequency.value=hz(n+(m.padOct??-12));o.detune.value=d;
   const og=ctx.createGain();og.gain.value=.5/notes.length;o.connect(og);og.connect(f);o.start(t);o.stop(t+dur+1.5)}));
 }
 function pluck(n,t,m){
